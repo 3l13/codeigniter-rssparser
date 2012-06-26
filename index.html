@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Codeigniter-RSSParser by hasokeric</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Codeigniter-RSSParser</h1>
+          <h2>A Easy to use RSS Parser Library (PHP, CodeIgniter)</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/hasokeric/codeigniter-rssparser/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/hasokeric/codeigniter-rssparser/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/hasokeric/codeigniter-rssparser" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>RSSParser library - CI 2.0+</h1>
+
+<h2>Install</h2>
+
+<p>Simply add this library to your /application/libraries/ folder.</p>
+
+<h2>Usage</h2>
+
+<p>If you have followed the Install step correctly you should be able to use.</p>
+
+<div class="highlight">
+<pre><span class="x">$this-&gt;load-&gt;library('rssparser');                          // load library</span>
+<span class="x">$this-&gt;rssparser-&gt;set_feed_url('http://example.com/feed');  // get feed</span>
+<span class="x">$this-&gt;rssparser-&gt;set_cache_life(30);                       // Set cache life time in minutes</span>
+<span class="x">$rss = $this-&gt;rssparser-&gt;getFeed(6);                        // Get six items from the feed</span>
+</pre>
+</div>
+
+
+<p>$rss will return an array which will include:</p>
+
+<div class="highlight">
+<pre><span class="x">title, description, author, pubDate, link</span>
+</pre>
+</div>
+
+
+<p>You can also chain the above statement.</p>
+
+<div class="highlight">
+<pre><span class="x">$this-&gt;load-&gt;library('rssparser');</span>
+<span class="x">$this-&gt;rssparser-&gt;set_feed_url('http://example.com/feed')-&gt;set_cache_life(30)-&gt;getFeed(6);</span>
+</pre>
+</div>
+
+
+<h2>Example</h2>
+
+<p>Getting RSS from a single source.</p>
+
+<div class="highlight">
+<pre><span class="x">function get_ars() </span>
+<span class="x">{</span>
+<span class="x">    // Load RSS Parser</span>
+<span class="x">    $this-&gt;load-&gt;library('rssparser');</span>
+
+<span class="x">    // Get 6 items from arstechnica</span>
+<span class="x">    $rss = $this-&gt;rssparser-&gt;set_feed_url('http://feeds.arstechnica.com/arstechnica/index/')-&gt;set_cache_life(30)-&gt;getFeed(6);</span>
+
+<span class="x">    foreach ($rss as $item)</span>
+<span class="x">    {</span>
+<span class="x">        echo $item['title'];</span>
+<span class="x">        echo $item['description'];</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre>
+</div>
+
+
+<p>Getting RSS from multiple sources.</p>
+
+<div class="highlight">
+<pre><span class="x">function get_logistics_news() </span>
+<span class="x">{</span>
+<span class="x">    // Load RSS Parser</span>
+<span class="x">    $this-&gt;load-&gt;library('rssparser');</span>
+
+<span class="x">    // Get RSS</span>
+<span class="x">    $rss[] = $this-&gt;rssparser-&gt;set_feed_url('http://www.3plwire.com/feed/')-&gt;set_cache_life(30)-&gt;getFeed(1);</span>
+<span class="x">    $rss[] = $this-&gt;rssparser-&gt;set_feed_url('http://www.supplychain.cn/en/rss/articles/')-&gt;set_cache_life(30)-&gt;getFeed(1);</span>
+
+<span class="x">    foreach ($rss as $feed)</span>
+<span class="x">    {</span>
+<span class="x">        foreach ($feed as $item)</span>
+<span class="x">        {</span>
+<span class="x">            echo $item['title'];</span>
+<span class="x">            echo $item['description'];</span>
+<span class="x">        }</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre>
+</div>
+
+
+<h2>Misc</h2>
+
+<div class="highlight">
+<pre><span class="x">// Using a callback function to parse addictional XML fields</span>
+
+<span class="x">$this-&gt;load-&gt;library('rssparser', array($this, 'parseFile')); // parseFile method of current class</span>
+
+<span class="x">function parseFile($data, $item)</span>
+<span class="x">{</span>
+<span class="x">    $data['summary'] = (string)$item-&gt;summary;</span>
+<span class="x">    return $data;</span>
+<span class="x">}</span>
+</pre>
+</div>
+
+        </section>
+
+        <footer>
+          Codeigniter-RSSParser is maintained by <a href="https://github.com/hasokeric">hasokeric</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
